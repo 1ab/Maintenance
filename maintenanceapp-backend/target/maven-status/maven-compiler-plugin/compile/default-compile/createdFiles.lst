@@ -1,0 +1,6 @@
+com\example\maintenanceapp\samples\backend\data\Availability.class
+com\example\maintenanceapp\samples\backend\mock\MockDataGenerator.class
+com\example\maintenanceapp\samples\backend\data\Category.class
+com\example\maintenanceapp\samples\backend\DataService.class
+com\example\maintenanceapp\samples\backend\mock\MockDataService.class
+com\example\maintenanceapp\samples\backend\data\Product.class
