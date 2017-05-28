@@ -1,8 +1,8 @@
 package com.example.maintenanceapp.view;
 
 import com.example.maintenanceapp.MyUI;
-import com.example.maintenanceapp.samples.backend.DataService;
-import com.example.maintenanceapp.samples.backend.data.Product;
+import com.example.maintenanceapp.data.Job;
+import com.example.maintenanceapp.service.JobService;
 
 import java.io.Serializable;
 import com.vaadin.server.Page;
@@ -61,50 +61,50 @@ public class JobsLogic implements Serializable {
 				// login
 				try {
 					int pid = Integer.parseInt(productId);
-					Product product = findProduct(pid);
-					view.selectRow(product);
+					Job job = findProduct(pid);
+					view.selectRow(job);
 				} catch (NumberFormatException e) {
 				}
 			}
 		}
 	}
 
-	private Product findProduct(int productId) {
-		return DataService.get().getProductById(productId);
+	private Job findProduct(int productId) {
+		return JobService.get().getProductById(productId);
 	}
 
-	public void saveProduct(Product product) {
-		view.showSaveNotification(product.getProductName() + " (" + product.getId() + ") updated");
+	public void saveProduct(Job job) {
+		view.showSaveNotification(job.getItem() + " (" + job.getId() + ") updated");
 		view.clearSelection();
-		view.updateProduct(product);
+		view.updateProduct(job);
 		setFragmentParameter("");
 	}
 
-	public void deleteProduct(Product product) {
-		view.showSaveNotification(product.getProductName() + " (" + product.getId() + ") removed");
+	public void deleteProduct(Job job) {
+		view.showSaveNotification(job.getItem() + " (" + job.getId() + ") removed");
 		view.clearSelection();
-		view.removeProduct(product);
+		view.removeProduct(job);
 		setFragmentParameter("");
 	}
 
-	public void editProduct(Product product) {
-		if (product == null) {
+	public void editProduct(Job job) {
+		if (job == null) {
 			setFragmentParameter("");
 		} else {
-			setFragmentParameter(product.getId() + "");
+			setFragmentParameter(job.getId() + "");
 		}
-		view.editProduct(product);
+		view.editProduct(job);
 	}
 
 	public void newProduct() {
 		view.clearSelection();
 		setFragmentParameter("new");
-		view.editProduct(new Product());
+		view.editProduct(new Job());
 	}
 
-	public void rowSelected(Product product) {
+	public void rowSelected(Job job) {
 		if (MyUI.get().getAccessControl().isUserInRole("admin")) {
-			view.editProduct(product);
+			view.editProduct(job);
 		}
 	}
 

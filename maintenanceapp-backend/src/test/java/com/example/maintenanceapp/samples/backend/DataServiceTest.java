@@ -2,8 +2,10 @@ package com.example.maintenanceapp.samples.backend;
 
 import org.junit.Before;
 import org.junit.Test;
-import com.example.maintenanceapp.samples.backend.data.Product;
-import com.example.maintenanceapp.samples.backend.mock.MockDataService;
+
+import com.example.maintenanceapp.backend.mock.MockJobService;
+import com.example.maintenanceapp.data.Job;
+import com.example.maintenanceapp.service.JobService;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -13,11 +15,11 @@ import static org.junit.Assert.assertFalse;
  */
 public class DataServiceTest {
 
-    private DataService service;
+    private JobService service;
 
     @Before
     public void setUp() throws Exception {
-        service = MockDataService.getInstance();
+        service = MockJobService.getInstance();
     }
 
     @Test
@@ -32,10 +34,10 @@ public class DataServiceTest {
 
     @Test
     public void testUpdateProduct_updatesTheProduct() throws Exception {
-        Product p = service.getAllProducts().iterator().next();
-        p.setProductName("My Test Name");
+        Job p = service.getAllProducts().iterator().next();
+        p.setItem("My Test Name");
         service.updateProduct(p);
-        Product p2 = service.getAllProducts().iterator().next();
-        assertEquals("My Test Name", p2.getProductName());
+        Job p2 = service.getAllProducts().iterator().next();
+        assertEquals("My Test Name", p2.getItem());
     }
 }

@@ -1,8 +1,11 @@
 package com.example.maintenanceapp.app;
 
 import com.example.maintenanceapp.MyUI;
-import com.example.maintenanceapp.view.AboutView;
+import com.example.maintenanceapp.view.FormsManualsView;
 import com.example.maintenanceapp.view.JobsView;
+import com.example.maintenanceapp.view.TipsView;
+import com.example.maintenanceapp.view.WorkOrdersView;
+import com.example.maintenanceapp.view.WorkbooksView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
@@ -31,13 +34,13 @@ public class MainScreen extends HorizontalLayout {
         menu = new Menu(navigator);
         menu.addView(new JobsView(), JobsView.VIEW_NAME,
                 JobsView.VIEW_NAME, VaadinIcons.EDIT);
-        menu.addView(new JobsView(), JobsView.VIEW_NAME,
-                JobsView.VIEW_NAME, VaadinIcons.EDIT);
-        menu.addView(new JobsView(), JobsView.VIEW_NAME,
-                JobsView.VIEW_NAME, VaadinIcons.EDIT);
-        menu.addView(new AboutView(), "Forms & Manuals", "Forms & Manuals",
+        menu.addView(new WorkOrdersView(), WorkOrdersView.VIEW_NAME,
+        		WorkOrdersView.VIEW_NAME, VaadinIcons.EDIT);
+        menu.addView(new WorkbooksView(), WorkbooksView.VIEW_NAME,
+        		WorkbooksView.VIEW_NAME, VaadinIcons.EDIT);
+        menu.addView(new FormsManualsView(), "Forms & Manuals", "Forms & Manuals",
                 VaadinIcons.INFO_CIRCLE);
-        menu.addView(new AboutView(), "Tips & FAQs", "Tips & FAQs",
+        menu.addView(new TipsView(), "Tips & FAQs", "Tips & FAQs",
                 VaadinIcons.INFO_CIRCLE);
 
         navigator.addViewChangeListener(viewChangeListener);

@@ -1,11 +1,10 @@
 package com.example.maintenanceapp.view;
 
 import com.example.maintenanceapp.controller.JobsDataProvider;
+import com.example.maintenanceapp.data.Job;
 import com.example.maintenanceapp.form.JobsForm;
 import com.example.maintenanceapp.grid.JobsGrid;
 import com.example.maintenanceapp.samples.ResetButtonForTextField;
-import com.example.maintenanceapp.samples.backend.DataService;
-import com.example.maintenanceapp.samples.backend.data.Product;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -27,7 +26,7 @@ import com.vaadin.ui.themes.ValoTheme;
  */
 public class JobsView extends CssLayout implements View {
 
-	public static final String VIEW_NAME = "Inventory";
+	public static final String VIEW_NAME = "P.M. Jobs";
 	private JobsGrid grid;
 	private JobsForm form;
 	private TextField filter;
@@ -47,7 +46,6 @@ public class JobsView extends CssLayout implements View {
 		grid.asSingleSelect().addValueChangeListener(event -> viewLogic.rowSelected(event.getValue()));
 
 		form = new JobsForm(viewLogic);
-		form.setCategories(DataService.get().getAllCategories());
 
 		VerticalLayout barAndGridLayout = new VerticalLayout();
 		barAndGridLayout.addComponent(topLayout);
@@ -71,7 +69,7 @@ public class JobsView extends CssLayout implements View {
 		// null
 		filter.addValueChangeListener(event -> dataProvider.setFilter(event.getValue()));
 
-		newProduct = new Button("New product");
+		newProduct = new Button("New job");
 		newProduct.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		newProduct.setIcon(VaadinIcons.PLUS_CIRCLE);
 		newProduct.addClickListener(click -> viewLogic.newProduct());
@@ -107,32 +105,32 @@ public class JobsView extends CssLayout implements View {
 		grid.getSelectionModel().deselectAll();
 	}
 
-	public void selectRow(Product row) {
+	public void selectRow(Job row) {
 		grid.getSelectionModel().select(row);
 	}
 
-	public Product getSelectedRow() {
+	public Job getSelectedRow() {
 		return grid.getSelectedRow();
 	}
 
-	public void updateProduct(Product product) {
-		dataProvider.save(product);
+	public void updateProduct(Job job) {
+		dataProvider.save(job);
 		// FIXME: Grid used to scroll to the updated item
 	}
 
-	public void removeProduct(Product product) {
-		dataProvider.delete(product);
+	public void removeProduct(Job job) {
+		dataProvider.delete(job);
 	}
 
-	public void editProduct(Product product) {
-		if (product != null) {
+	public void editProduct(Job job) {
+		if (job != null) {
 			form.addStyleName("visible");
 			form.setEnabled(true);
 		} else {
 			form.removeStyleName("visible");
 			form.setEnabled(false);
 		}
-		form.editProduct(product);
+		form.editProduct(job);
 	}
 
 }

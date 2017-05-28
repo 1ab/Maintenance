@@ -5,10 +5,10 @@ import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Locale;
 
+import com.example.maintenanceapp.data.Category;
+import com.example.maintenanceapp.data.Job;
+import com.example.maintenanceapp.enums.Availability;
 import com.example.maintenanceapp.samples.AttributeExtension;
-import com.example.maintenanceapp.samples.backend.data.Availability;
-import com.example.maintenanceapp.samples.backend.data.Category;
-import com.example.maintenanceapp.samples.backend.data.Product;
 import com.example.maintenanceapp.view.JobsLogic;
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.Binder;
@@ -27,8 +27,8 @@ import com.vaadin.server.Page;
 public class JobsForm extends JobsFormDesign {
 
 	private JobsLogic viewLogic;
-	private Binder<Product> binder;
-	private Product currentProduct;
+	private Binder<Job> binder;
+	private Job currentProduct;
 
 	private static class StockPriceConverter extends StringToIntegerConverter {
 
@@ -65,21 +65,20 @@ public class JobsForm extends JobsFormDesign {
 
 		// Mark the stock count field as numeric.
 		// This affects the virtual keyboard shown on mobile devices.
-		AttributeExtension stockFieldExtension = new AttributeExtension();
-		stockFieldExtension.extend(stockCount);
-		stockFieldExtension.setAttribute("type", "number");
+		AttributeExtension frequencyFieldExtension = new AttributeExtension();
+		frequencyFieldExtension.extend(stockCount);
+		frequencyFieldExtension.setAttribute("type", "number");
 
 		availability.setItems(Availability.values());
 		availability.setEmptySelectionAllowed(false);
 
-		binder = new BeanValidationBinder<>(Product.class);
+		binder = new BeanValidationBinder<>(Job.class);
 		// binder.forField(price).withConverter(new EuroConverter())
 		// .bind("price");
-		binder.forField(stockCount).withConverter(new StockPriceConverter()).bind("stockCount");
+	//	binder.forField(stockCount).withConverter(new StockPriceConverter()).bind("stockCount");
 
-		category.setItemCaptionGenerator(Category::getName);
-		binder.forField(category).bind("category");
-		binder.bindInstanceFields(this);
+		//binder.forField(category).bind("category");
+//		binder.bindInstanceFields(this);
 
 		// enable/disable save button while editing
 		binder.addStatusChangeListener(event -> {
@@ -106,16 +105,12 @@ public class JobsForm extends JobsFormDesign {
 		});
 	}
 
-	public void setCategories(Collection<Category> categories) {
-		category.setItems(categories);
-	}
-
-	public void editProduct(Product product) {
-		if (product == null) {
-			product = new Product();
+	public void editProduct(Job job) {
+		if (job == null) {
+			job = new Job();
 		}
-		currentProduct = product;
-		binder.readBean(product);
+		currentProduct = job;
+		binder.readBean(job);
 
 		// Scroll to the top
 		// As this is not a Panel, using JavaScript

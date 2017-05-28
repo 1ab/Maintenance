@@ -4,13 +4,12 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import com.example.maintenanceapp.samples.backend.DataService;
-import com.example.maintenanceapp.samples.backend.data.Product;
-
+import com.example.maintenanceapp.data.Job;
+import com.example.maintenanceapp.service.JobService;
 import com.vaadin.data.provider.AbstractDataProvider;
 import com.vaadin.data.provider.Query;
 
-public class JobsDataProvider extends AbstractDataProvider<Product, String> {
+public class JobsDataProvider extends AbstractDataProvider<Job, String> {
 
 	/** Text filter that can be changed separately. */
 	private String filterText = "";
@@ -18,28 +17,28 @@ public class JobsDataProvider extends AbstractDataProvider<Product, String> {
 	/**
 	 * Store given product to the backing data service.
 	 * 
-	 * @param product
+	 * @param job
 	 *            the updated or new product
 	 */
-	public void save(Product product) {
-		boolean newProduct = product.getId() == -1;
+	public void save(Job job) {
+		boolean newProduct = job.getId() == -1;
 
-		DataService.get().updateProduct(product);
+		JobService.get().updateProduct(job);
 		if (newProduct) {
 			refreshAll();
 		} else {
-			refreshItem(product);
+			refreshItem(job);
 		}
 	}
 
 	/**
 	 * Delete given product from the backing data service.
 	 * 
-	 * @param product
+	 * @param job
 	 *            the product to be deleted
 	 */
-	public void delete(Product product) {
-		DataService.get().deleteProduct(product.getId());
+	public void delete(Job job) {
+		JobService.get().deleteProduct(job.getId());
 		refreshAll();
 	}
 
@@ -62,10 +61,10 @@ public class JobsDataProvider extends AbstractDataProvider<Product, String> {
 	}
 
 	@Override
-	public Integer getId(Product product) {
-		Objects.requireNonNull(product, "Cannot provide an id for a null product.");
+	public Integer getId(Job job) {
+		Objects.requireNonNull(job, "Cannot provide an id for a null product.");
 
-		return product.getId();
+		return job.getId();
 	}
 
 	@Override
@@ -74,19 +73,19 @@ public class JobsDataProvider extends AbstractDataProvider<Product, String> {
 	}
 
 	@Override
-	public int size(Query<Product, String> t) {
+	public int size(Query<Job, String> t) {
 		return (int) fetch(t).count();
 	}
 
 	@Override
-	public Stream<Product> fetch(Query<Product, String> query) {
+	public Stream<Job> fetch(Query<Job, String> query) {
 		if (filterText.isEmpty()) {
-			return DataService.get().getAllProducts().stream();
+			return JobService.get().getAllProducts().stream();
 		}
-		return DataService.get().getAllProducts().stream()
-				.filter(product -> passesFilter(product.getProductName(), filterText)
-						|| passesFilter(product.getAvailability(), filterText)
-						|| passesFilter(product.getCategory(), filterText));
+		return JobService.get().getAllProducts().stream()
+				.filter(product -> passesFilter(product.getItem(), filterText)
+						|| passesFilter(product.getStatus(), filterText)
+						|| passesFilter(product.getFrequency(), filterText));
 	}
 
 	private boolean passesFilter(Object object, String filterText) {
